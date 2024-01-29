@@ -1,5 +1,4 @@
 import styles from "./style.module.css";
-
 import { formatTimeAgo } from "../../helpers/formatTimeAgo";
 
 const NewsItem = ({ item }: any) => {
