@@ -4,7 +4,6 @@ import Image from "../Image/Image";
 import { formatTimeAgo } from "../../helpers/formatTimeAgo";
 
 const NewsBanner = ({ item }:any) => {
-  console.log(item);
   return (
     <div className={styles.banner}>
       <Image image={item?.image} />
