@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import NewsBanner from "../../comoponents/NewsBanner/NewsBanner";
 import styles from "./styles.module.css";
-import { getNews } from "../../api/apiNews";
+import { getCategory, getNews } from "../../api/apiNews";
 import NewsList from "../../comoponents/NewsList/NewsList";
 import Skeleton from "../../comoponents/Skeleton/Skeleton";
 import Pagination from "../../comoponents/Pagination/Pagination";
+import Categories from "../../comoponents/Categories/Categories";
 
 const Main = () => {
     const [news, setNews] = useState([])
@@ -12,10 +13,20 @@ const Main = () => {
     const[currentPage, SetCurrentPage] = useState(1)
     const totalPages:number = 10
     const pageSize:number = 10
+    const[categories, setCategories] = useState<string[]>([])
+    const [selectedCategory, SetSelectedCategory] = useState<string>("All");
+
+
     const fetchNews = async (currentPage: number) => {
       try {
         setIsLoading(true)
-        const response = await getNews(currentPage, pageSize);
+        const response = await getNews({
+          page_number:currentPage,
+          page_size:pageSize,
+          category:selectedCategory === "All" ? null : selectedCategory
+
+
+        });
         setNews(response.news);
         setIsLoading(false);
       } catch (error) {
@@ -23,9 +34,25 @@ const Main = () => {
       }
     };
 
+     const fetchCategories = async () => {
+       try {
+         const response = await getCategory();
+         setCategories(["All", ...(response.categories as string[])]);
+ 
+       } catch (error) {
+         console.log(error);
+       }
+     };
+     console.log(categories)
+
+     useEffect(() => {
+      fetchCategories()
+     } ,[])
+
+
   useEffect(() => {
     fetchNews(currentPage);
-  }, [currentPage]);
+  }, [currentPage,selectedCategory]);
 
   const handleNextPage  = () => {
     if (currentPage < totalPages){
@@ -46,6 +73,7 @@ const handlePageClick = (pageNumber:number) => {
 
   return (
     <main className={styles.main}>
+      <Categories categories={categories} selectedCategory={selectedCategory} SetSelectedCategory={SetSelectedCategory}  />
       {news.length > 0 && !isLoading ? (
         <NewsBanner item={news[0]} />
       ) : (
