@@ -1,4 +1,3 @@
-import { formatDate } from "../../helpers/formatDate"
 import styles from "./style.module.css"
 
 interface SearchInterface {

@@ -2,8 +2,8 @@
     display: flex;
     width: 100%;
     padding: 12px 24px;
-    background-color: #fff;
-    border-bottom:1px solid #F2F4F5;
+    background-color: #9b6f6f;
+    border-bottom:1px solid #6892a7;
     flex-direction: column;
     gap: 12px;
 }
